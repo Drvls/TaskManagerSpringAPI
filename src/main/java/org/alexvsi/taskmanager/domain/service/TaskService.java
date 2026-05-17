@@ -1,6 +1,5 @@
 package org.alexvsi.taskmanager.domain.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.alexvsi.taskmanager.application.dto.TaskRequest;
 import org.alexvsi.taskmanager.application.dto.TaskResponse;
 import org.alexvsi.taskmanager.domain.entity.Task;
@@ -8,8 +7,6 @@ import org.alexvsi.taskmanager.infra.exception.TaskNotFoundException;
 import org.alexvsi.taskmanager.infra.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class TaskService {

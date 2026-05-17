@@ -2,14 +2,11 @@ package org.alexvsi.taskmanager.api.controller;
 
 import org.alexvsi.taskmanager.application.dto.TaskRequest;
 import org.alexvsi.taskmanager.application.dto.TaskResponse;
-import org.alexvsi.taskmanager.domain.entity.Task;
 import org.alexvsi.taskmanager.domain.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/tasks")
