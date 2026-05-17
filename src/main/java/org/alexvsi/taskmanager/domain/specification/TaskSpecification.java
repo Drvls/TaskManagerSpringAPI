@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskSpecification {
-    public Specification<Task> filter(
+    public static Specification<Task> filter(
             String title,
             Priority priority,
             LocalDate deadline,
