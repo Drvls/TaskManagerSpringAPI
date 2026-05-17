@@ -39,4 +39,44 @@ public class TaskService {
 
         return new TaskResponse(repository.save(task));
     }
+
+    public TaskResponse patchTask(Long id, TaskRequest request){
+        Task task = repository.findById(id).orElseThrow(
+                () -> new TaskNotFoundException("Task with id: " + id + " not found")
+        );
+
+        if(request.title() != null
+                && !request.title().isBlank()
+                && !task.getTitle().equals(request.title())
+        ){
+            task.setTitle(request.title());
+        }
+
+        if(request.description() != null
+            && !request.description().isBlank()
+            && !task.getDescription().equals(request.description())
+        ){
+            task.setDescription(request.description());
+        }
+
+        if(request.priority() != null
+                && task.getPriority() != request.priority()
+        ){
+            task.setPriority(request.priority());
+        }
+
+        if(request.deadline() != null
+                && task.getDeadline().isEqual(request.deadline())
+        ){
+            task.setDeadline(request.deadline());
+        }
+
+        if(request.taskStatus() != null
+               && task.getTaskStatus() != request.taskStatus()
+        ){
+            task.setTaskStatus(request.taskStatus());
+        }
+
+        return new TaskResponse(repository.save(task));
+    }
 }
