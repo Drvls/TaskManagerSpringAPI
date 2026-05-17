@@ -3,12 +3,15 @@ package org.alexvsi.taskmanager.api.controller;
 import jakarta.validation.Valid;
 import org.alexvsi.taskmanager.application.dto.TaskRequest;
 import org.alexvsi.taskmanager.application.dto.TaskResponse;
+import org.alexvsi.taskmanager.domain.enums.Priority;
+import org.alexvsi.taskmanager.domain.enums.Status;
 import org.alexvsi.taskmanager.domain.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -43,9 +46,15 @@ public class TaskController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TaskResponse>> getAllTasks(@RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "10") int size){
-        List<TaskResponse> tasks = taskService.getAllTasks(page, size);
+    public ResponseEntity<List<TaskResponse>> searchTask(
+            @RequestParam(defaultValue = "0") int page,
+             @RequestParam(defaultValue = "10") int size,
+             @RequestParam(required = false) String title,
+             @RequestParam(required = false) Priority priority,
+             @RequestParam(required = false) LocalDate deadline,
+             @RequestParam(required = false) Status status
+             ){
+        List<TaskResponse> tasks = taskService.searchTasks(page, size, title, priority, deadline, status);
         return ResponseEntity.status(HttpStatus.OK).body(tasks);
     }
 }

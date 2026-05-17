@@ -3,13 +3,18 @@ package org.alexvsi.taskmanager.domain.service;
 import org.alexvsi.taskmanager.application.dto.TaskRequest;
 import org.alexvsi.taskmanager.application.dto.TaskResponse;
 import org.alexvsi.taskmanager.domain.entity.Task;
+import org.alexvsi.taskmanager.domain.enums.Priority;
+import org.alexvsi.taskmanager.domain.enums.Status;
+import org.alexvsi.taskmanager.domain.specification.TaskSpecification;
 import org.alexvsi.taskmanager.infra.exception.TaskNotFoundException;
 import org.alexvsi.taskmanager.infra.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -91,9 +96,12 @@ public class TaskService {
         return new TaskResponse(task);
     }
 
-    public List<TaskResponse> getAllTasks(int page, int size){
+    public List<TaskResponse> searchTasks(
+            int page, int size, String title, Priority priority, LocalDate deadline, Status taskStatus
+    ){
+        Specification<Task> spec = TaskSpecification.filter(title, priority, deadline, taskStatus);
         PageRequest pageRequest = PageRequest.of(page, size);
-        Page<Task> tasks = repository.findAll(pageRequest);
+        Page<Task> tasks = repository.findAll(spec, pageRequest);
         return tasks.map(TaskResponse::new).toList();
     }
 }
