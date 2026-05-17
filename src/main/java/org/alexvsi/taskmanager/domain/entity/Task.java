@@ -1,44 +1,46 @@
 package org.alexvsi.taskmanager.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.alexvsi.taskmanager.domain.enums.Priority;
 import org.alexvsi.taskmanager.domain.enums.Status;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Table(name = "task")
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Task {
 
     @Id
-    @GeneratedValue
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 50)
     private String title;
+
+    @Column(length = 150)
     private String description;
+
+    @Enumerated(EnumType.STRING)
     private Priority priority;
+
     private LocalDate deadline;
+
+    @Enumerated(EnumType.STRING)
     private Status taskStatus;
 
-    /*
-    @Override
-    public String toString() {
-        DateTimeFormatter dataFormato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return "\nID: " + id
-                + "\nTítulo: " + title
-                + "\nDescrição: " + description
-                + "\nPrioridade: " + priority
-                + "\nStatus: " + taskStatus
-                + "\nData limite: " + deadline.format(dataFormato);
+    public Task(String title, String description, Priority priority, LocalDate deadline, Status status) {
+        this.title = title;
+        this.description = description;
+        this.priority = priority;
+        this.deadline = deadline;
+        this.taskStatus = status;
     }
-     */
 }
