@@ -1,5 +1,6 @@
 package org.alexvsi.taskmanager.api.controller;
 
+import jakarta.validation.Valid;
 import org.alexvsi.taskmanager.application.dto.TaskRequest;
 import org.alexvsi.taskmanager.application.dto.TaskResponse;
 import org.alexvsi.taskmanager.domain.service.TaskService;
@@ -18,19 +19,19 @@ public class TaskController {
     private TaskService taskService;
 
     @PostMapping
-    public ResponseEntity<TaskResponse> addTask(@RequestBody TaskRequest request) {
+    public ResponseEntity<TaskResponse> addTask(@Valid @RequestBody TaskRequest request) {
         TaskResponse task = taskService.addTask(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(task);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id , @RequestBody TaskRequest request) {
+    public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id , @Valid @RequestBody TaskRequest request) {
         TaskResponse task = taskService.updateTask(id, request);
         return ResponseEntity.status(HttpStatus.OK).body(task);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<TaskResponse> patchUpdate(@PathVariable Long id, @RequestBody TaskRequest request){
+    public ResponseEntity<TaskResponse> patchUpdate(@PathVariable Long id, @Valid @RequestBody TaskRequest request){
         TaskResponse task = taskService.patchTask(id, request);
         return ResponseEntity.status(HttpStatus.OK).body(task);
     }
