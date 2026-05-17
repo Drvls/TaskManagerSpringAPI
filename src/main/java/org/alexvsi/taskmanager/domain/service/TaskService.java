@@ -29,18 +29,17 @@ public class TaskService {
         return new TaskResponse(repository.save(task));
     }
 
-    public TaskResponse updateTask(Long id, TaskRequest response) {
+    public TaskResponse updateTask(Long id, TaskRequest request) {
         Task task = repository.findById(id).orElseThrow(() ->
                 new TaskNotFoundException("Task with id: " + id + " not found")
         );
 
-        task.setTitle(response.title());
-        task.setDescription(response.description());
-        task.setPriority(response.priority());
-        task.setDeadline(response.deadline());
-        task.setTaskStatus(response.taskStatus());
+        task.setTitle(request.title());
+        task.setDescription(request.description());
+        task.setPriority(request.priority());
+        task.setDeadline(request.deadline());
+        task.setTaskStatus(request.taskStatus());
 
         return new TaskResponse(repository.save(task));
     }
-
 }
