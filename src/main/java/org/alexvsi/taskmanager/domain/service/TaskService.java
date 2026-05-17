@@ -6,7 +6,11 @@ import org.alexvsi.taskmanager.domain.entity.Task;
 import org.alexvsi.taskmanager.infra.exception.TaskNotFoundException;
 import org.alexvsi.taskmanager.infra.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TaskService {
@@ -85,5 +89,11 @@ public class TaskService {
                 () -> new TaskNotFoundException("Task with id: " + id + " not found")
         );
         return new TaskResponse(task);
+    }
+
+    public List<TaskResponse> getAllTasks(int page, int size){
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Task> tasks = repository.findAll(pageRequest);
+        return tasks.map(TaskResponse::new).toList();
     }
 }

@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
@@ -37,5 +39,12 @@ public class TaskController {
     public ResponseEntity<TaskResponse> getTask(@PathVariable Long id){
         TaskResponse task = taskService.getTask(id);
         return ResponseEntity.status(HttpStatus.OK).body(task);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TaskResponse>> getAllTasks(@RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "10") int size){
+        List<TaskResponse> tasks = taskService.getAllTasks(page, size);
+        return ResponseEntity.status(HttpStatus.OK).body(tasks);
     }
 }
