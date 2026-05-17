@@ -32,4 +32,10 @@ public class TaskController {
         TaskResponse task = taskService.patchTask(id, request);
         return ResponseEntity.status(HttpStatus.OK).body(task);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TaskResponse> getTask(@PathVariable Long id){
+        TaskResponse task = taskService.getTask(id);
+        return ResponseEntity.status(HttpStatus.OK).body(task);
+    }
 }

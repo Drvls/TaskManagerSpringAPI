@@ -79,4 +79,11 @@ public class TaskService {
 
         return new TaskResponse(repository.save(task));
     }
+
+    public TaskResponse getTask(Long id){
+        Task task = repository.findById(id).orElseThrow(
+                () -> new TaskNotFoundException("Task with id: " + id + " not found")
+        );
+        return new TaskResponse(task);
+    }
 }
