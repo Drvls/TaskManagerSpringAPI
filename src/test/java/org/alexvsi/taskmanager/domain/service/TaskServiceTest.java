@@ -415,9 +415,7 @@ class TaskServiceTest {
         Specification<Task> spec = TaskSpecification.filter(title, priority, deadline, status);
         PageRequest pageRequest = PageRequest.of(page, size);
 
-        List<Task> listTasks = new  ArrayList<>();
-        listTasks.add(task);
-        listTasks.add(task2);
+        List<Task> listTasks = List.of(task, task2);
 
         Page<Task> pageTasks = new PageImpl<>(listTasks, pageRequest, size);
 
