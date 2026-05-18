@@ -1,6 +1,7 @@
 package org.alexvsi.taskmanager.api.controller;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.alexvsi.taskmanager.application.dto.TaskRequest;
 import org.alexvsi.taskmanager.application.dto.TaskResponse;
 import org.alexvsi.taskmanager.domain.enums.Priority;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
@@ -56,5 +58,11 @@ public class TaskController {
              ){
         List<TaskResponse> tasks = taskService.searchTasks(page, size, title, priority, deadline, status);
         return ResponseEntity.status(HttpStatus.OK).body(tasks);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id){
+        taskService.deleteTask(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

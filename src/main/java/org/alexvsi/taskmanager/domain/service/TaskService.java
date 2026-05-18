@@ -104,4 +104,12 @@ public class TaskService {
         Page<Task> tasks = repository.findAll(spec, pageRequest);
         return tasks.map(TaskResponse::new).toList();
     }
+
+    public void deleteTask(Long id){
+        Task task = repository.findById(id).orElseThrow(
+                () -> new TaskNotFoundException("Task with id: " + id + " not found")
+        );
+
+        repository.delete(task);
+    }
 }
