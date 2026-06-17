@@ -43,12 +43,14 @@ class TaskControllerTest {
     @Test
     @DisplayName("Should return 201 when creating task")
     void shouldReturn201WhenCreatingTask() throws Exception {
+        LocalDate deadline = LocalDate.now().plusYears(100);
+
         TaskResponse response = new TaskResponse(new Task(
                 1L,
                 "Read a book",
                 "How to get a job",
                 Priority.HIGH,
-                LocalDate.of(2026, 5, 20),
+                deadline,
                 Status.PENDING
         ));
 
@@ -61,16 +63,16 @@ class TaskControllerTest {
                                     "title": "Read a book",
                                     "description": "How to get a job",
                                     "priority": "HIGH",
-                                    "deadline": "2026-05-20",
+                                    "deadline": "%s",
                                     "taskStatus": "PENDING"
                                 }
-                                """))
+                                """.formatted(deadline)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.task.id").value("1"))
                 .andExpect(jsonPath("$.task.title").value("Read a book"))
                 .andExpect(jsonPath("$.task.description").value("How to get a job"))
                 .andExpect(jsonPath("$.task.priority").value("HIGH"))
-                .andExpect(jsonPath("$.task.deadline").value("2026-05-20"))
+                .andExpect(jsonPath("$.task.deadline").value(deadline.toString()))
                 .andExpect(jsonPath("$.task.taskStatus").value("PENDING"));
     }
 
@@ -111,12 +113,14 @@ class TaskControllerTest {
     @Test
     @DisplayName("Should return 200 when update task")
     void shouldReturn200WhenUpdateTask() throws Exception {
+        LocalDate deadline = LocalDate.now().plusYears(100);
+
         TaskResponse response = new TaskResponse(new Task(
                 1L,
                 "I eat cement",
                 "How to get a job",
                 Priority.HIGH,
-                LocalDate.of(2026, 5, 20),
+                deadline,
                 Status.PENDING
         ));
 
@@ -129,22 +133,24 @@ class TaskControllerTest {
                                     "title": "I eat cement",
                                     "description": "How to get a job",
                                     "priority": "HIGH",
-                                    "deadline": "2026-05-20",
+                                    "deadline": "%s",
                                     "taskStatus": "PENDING"
                                 }
-                                """))
+                                """.formatted(deadline)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.task.id").value("1"))
                 .andExpect(jsonPath("$.task.title").value("I eat cement"))
                 .andExpect(jsonPath("$.task.description").value("How to get a job"))
                 .andExpect(jsonPath("$.task.priority").value("HIGH"))
-                .andExpect(jsonPath("$.task.deadline").value("2026-05-20"))
+                .andExpect(jsonPath("$.task.deadline").value(deadline.toString()))
                 .andExpect(jsonPath("$.task.taskStatus").value("PENDING"));
     }
 
     @Test
     @DisplayName("Should return 404 when update task not found")
     void shouldReturn404WhenUpdateTaskNotFound() throws Exception {
+        LocalDate deadline = LocalDate.now().plusYears(100);
+
         when(taskService.updateTask(anyLong(), any(TaskRequest.class))).thenThrow(
                 new TaskNotFoundException("Task Not Found")
         );
@@ -156,22 +162,24 @@ class TaskControllerTest {
                                     "title": "I eat cement",
                                     "description": "How to get a job",
                                     "priority": "HIGH",
-                                    "deadline": "2026-05-20",
+                                    "deadline": "%s",
                                     "taskStatus": "PENDING"
                                 }
-                                """))
+                                """.formatted(deadline)))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @DisplayName("Should return 200 when patch task")
     void shouldReturn200WhenPatchTask() throws Exception {
+        LocalDate deadline = LocalDate.now().plusYears(100);
+
         TaskResponse response = new TaskResponse(new Task(
                 1L,
                 "I eat cement",
                 "How to get a job",
                 Priority.HIGH,
-                LocalDate.of(2026, 5, 20),
+                deadline,
                 Status.PENDING
         ));
 
@@ -184,22 +192,24 @@ class TaskControllerTest {
                                     "title": "I eat cement",
                                     "description": "How to get a job",
                                     "priority": "HIGH",
-                                    "deadline": "2026-05-20",
+                                    "deadline": "%s",
                                     "taskStatus": "PENDING"
                                 }
-                                """))
+                                """.formatted(deadline)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.task.id").value("1"))
                 .andExpect(jsonPath("$.task.title").value("I eat cement"))
                 .andExpect(jsonPath("$.task.description").value("How to get a job"))
                 .andExpect(jsonPath("$.task.priority").value("HIGH"))
-                .andExpect(jsonPath("$.task.deadline").value("2026-05-20"))
+                .andExpect(jsonPath("$.task.deadline").value(deadline.toString()))
                 .andExpect(jsonPath("$.task.taskStatus").value("PENDING"));
     }
 
     @Test
     @DisplayName("Should return 404 when patch task not found")
     void shouldReturn404WhenPatchTaskNotFound() throws Exception {
+        LocalDate deadline = LocalDate.now().plusYears(100);
+
         when(taskService.patchTask(anyLong(), any(TaskRequest.class))).thenThrow(
                 new TaskNotFoundException("Task Not Found")
         );
@@ -211,10 +221,10 @@ class TaskControllerTest {
                                     "title": "I eat cement",
                                     "description": "How to get a job",
                                     "priority": "HIGH",
-                                    "deadline": "2026-05-20",
+                                    "deadline": "%s",
                                     "taskStatus": "PENDING"
                                 }
-                                """))
+                                """.formatted(deadline)))
                 .andExpect(status().isNotFound());
     }
 
