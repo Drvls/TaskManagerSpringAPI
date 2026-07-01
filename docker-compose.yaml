@@ -1,0 +1,47 @@
+services:
+  api-task:
+    build: .
+    container_name: task-manager-api
+    ports:
+      - '${TASK_API_PORT}:8080'
+    environment:
+      DB_HOST: ${DATABASE_HOST}
+      DB_NAME: ${POSTGRES_DATABASE_NAME}
+      DB_USER: ${POSTGRES_DATABASE_USER}
+      DB_PASS: ${POSTGRES_DATABASE_PASSWORD}
+      DB_PORT: ${POSTGRES_DATABASE_PORT}
+    depends_on:
+      db-postgres:
+        condition: service_healthy
+    networks:
+      - public_network
+      - private_network
+
+  db-postgres:
+    image: postgres:15.18
+    container_name: db-postgres-taskmanager
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DATABASE_NAME}
+      POSTGRES_USER: ${POSTGRES_DATABASE_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_DATABASE_PASSWORD}
+    networks:
+      - private_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_DATABASE_USER} -d ${POSTGRES_DATABASE_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  public_network:
+    driver: bridge
+  private_network:
+    driver: bridge
+
+volumes:
+  db-data:
