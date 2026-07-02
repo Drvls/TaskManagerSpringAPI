@@ -4,14 +4,15 @@ REST API for task management built with Java and Spring Boot.
 
 ## Stack
 
-- Java 21
-- Spring Boot 3
+- Java 25
+- Spring Boot 4
 - Spring Data JPA + Hibernate
 - PostgreSQL
 - Flyway
 - Bean Validation
 - Lombok
 - JUnit 5 + Mockito
+- Docker + Docker Compose
 
 ## Architecture
 
@@ -85,7 +86,9 @@ Validation errors return `400 Bad Request` with a map of field → message.
 
 ## Running locally
 
-**Requirements:** Java 21, PostgreSQL
+### Without Docker
+
+**Requirements:** Java 25, PostgreSQL
 
 **1. Create the database**
 
@@ -114,6 +117,51 @@ spring.datasource.password=your_password
 The API will be available at `http://localhost:8080/tasks`.
 
 Flyway runs the migrations automatically on startup, no manual setup required.
+
+### With Docker
+
+**Requirements:** Docker, Docker Compose
+
+**1. Set up environment variables**
+
+Copy the example file and fill in the values:
+
+```bash
+cp .env.example .env
+```
+
+```env
+DATABASE_HOST=db-postgres
+POSTGRES_DATABASE_NAME=taskmanager
+POSTGRES_DATABASE_USER=your_username
+POSTGRES_DATABASE_PASSWORD=your_password
+POSTGRES_DATABASE_PORT=5432
+TASK_API_PORT=8080
+```
+
+> `DATABASE_HOST` must match the Compose service name (`db-postgres`), not `localhost`.
+
+**2. Start the containers**
+
+```bash
+docker compose up --build
+```
+
+The API will be available at `http://localhost:8080/tasks`.
+
+The database container exposes port `5432` locally if you need to inspect it with a client like DBeaver or psql.
+
+To stop and remove the containers:
+
+```bash
+docker compose down
+```
+
+To also remove the persistent volume (wipes all data):
+
+```bash
+docker compose down -v
+```
 
 ## Tests
 
